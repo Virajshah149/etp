@@ -1,0 +1,92 @@
+[
+    {
+        "cluster_id": 0,
+        "cluster_type": "Low Demand",
+        "n_stops": 7,
+        "avg_demand": 33.46,
+        "avg_routes": 1.86,
+        "ghost_hotspots": 0,
+        "demand_label": "Low",
+        "recommendation": "\ud83d\udfe2 Low Demand Zone: 7 stop(s) with avg 33 passengers/hour. Current coverage appears adequate.",
+        "stop_names": [
+            "Rajajinagar",
+            "Yeshwantpur Circle",
+            "Hebbal Flyover",
+            "Yelahanka",
+            "Vidyaranyapura",
+            "Nagawara Junction",
+            "Tumkur Road"
+        ]
+    },
+    {
+        "cluster_id": 1,
+        "cluster_type": "Moderate Demand",
+        "n_stops": 11,
+        "avg_demand": 45.83,
+        "avg_routes": 2.27,
+        "ghost_hotspots": 1,
+        "demand_label": "Low",
+        "recommendation": "\ud83d\udfe1 Moderate Demand Zone: Monitor 11 stop(s). Consider express services during peak hours.",
+        "stop_names": [
+            "Kempegowda Bus Station",
+            "Shivajinagar",
+            "Bannerghatta Road",
+            "Jayanagar 4th Block",
+            "Kengeri",
+            "MG Road",
+            "Banashankari",
+            "KR Market",
+            "Lalbagh Gate",
+            "Shanti Nagar",
+            "Richmond Circle"
+        ]
+    },
+    {
+        "cluster_id": 2,
+        "cluster_type": "Moderate Demand",
+        "n_stops": 10,
+        "avg_demand": 41.02,
+        "avg_routes": 2.0,
+        "ghost_hotspots": 0,
+        "demand_label": "Low",
+        "recommendation": "\ud83d\udfe1 Moderate Demand Zone: Monitor 10 stop(s). Consider express services during peak hours.",
+        "stop_names": [
+            "Whitefield",
+            "Electronic City",
+            "Marathahalli Bridge",
+            "Koramangala 1st Block",
+            "HSR Layout",
+            "BTM Layout",
+            "Silk Board Junction",
+            "Indiranagar 100ft Road",
+            "Domlur",
+            "Sarjapur Road"
+        ]
+    },
+    {
+        "cluster_id": 3,
+        "cluster_type": "Low Demand",
+        "n_stops": 1,
+        "avg_demand": 27.07,
+        "avg_routes": 1.0,
+        "ghost_hotspots": 0,
+        "demand_label": "Low",
+        "recommendation": "\ud83d\udfe2 Low Demand Zone: 1 stop(s) with avg 27 passengers/hour. Current coverage appears adequate.",
+        "stop_names": [
+            "Airport Road (BIAL)"
+        ]
+    },
+    {
+        "cluster_id": 4,
+        "cluster_type": "Low Demand",
+        "n_stops": 1,
+        "avg_demand": 31.02,
+        "avg_routes": 1.0,
+        "ghost_hotspots": 0,
+        "demand_label": "Low",
+        "recommendation": "\ud83d\udfe2 Low Demand Zone: 1 stop(s) with avg 31 passengers/hour. Current coverage appears adequate.",
+        "stop_names": [
+            "Anekal"
+        ]
+    }
+]

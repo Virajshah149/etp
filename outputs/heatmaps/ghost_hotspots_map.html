@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_be1aa849cf14ac4cd76248f922a591d9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+    <div style='position:fixed; bottom:30px; left:30px; z-index:1000;
+                background:white; padding:12px 18px; border-radius:8px;
+                border:1px solid #ccc; font-family:sans-serif; font-size:13px;
+                box-shadow: 2px 2px 6px rgba(0,0,0,0.2)'>
+        <b>🗺️ Eco-Transit Pulse — Map Legend</b><br><br>
+        <span style='color:red'>●</span> Ghost Hotspot (High demand, low coverage)<br>
+        <span style='color:blue'>●</span> Cluster 0<br>
+        <span style='color:green'>●</span> Cluster 1<br>
+        <span style='color:orange'>●</span> Cluster 2<br>
+        <span style='color:darkred'>●</span> Cluster 3<br>
+        <span style='color:purple'>●</span> Cluster 4<br>
+        <br>Heatmap: 🔵 Low → 🟡 Mid → 🔴 High demand
+    </div>
+    
+    
+            <div class="folium-map" id="map_be1aa849cf14ac4cd76248f922a591d9" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_be1aa849cf14ac4cd76248f922a591d9 = L.map(
+                "map_be1aa849cf14ac4cd76248f922a591d9",
+                {
+                    center: [12.9716, 77.5946],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_5dfa72cef72e4c2131786dfb1d73bdeb = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_5dfa72cef72e4c2131786dfb1d73bdeb.addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var heat_map_172a2db57c71f1a27b1b1179336f1326 = L.heatLayer(
+                [[12.9767, 77.5713, 53.23], [12.983, 77.5994, 44.48], [12.9698, 77.7499, 50.5], [12.8399, 77.677, 45.52], [12.9591, 77.7012, 42.56], [12.868, 77.597, 43.49], [12.9352, 77.6245, 39.38], [12.9116, 77.6474, 39.65], [12.9308, 77.583, 43.56], [12.9165, 77.6101, 39.69], [12.9175, 77.6229, 37.69], [12.9784, 77.6408, 40.72], [12.9942, 77.5516, 37.73], [13.0234, 77.539, 35.87], [13.0358, 77.597, 37.66], [13.1004, 77.5963, 30.0], [12.906, 77.4822, 48.47], [12.9757, 77.6063, 43.43], [12.9259, 77.566, 40.57], [13.0588, 77.5539, 30.99], [12.9607, 77.6395, 36.79], [13.045, 77.623, 34.81], [13.032, 77.523, 27.16], [13.1979, 77.7063, 27.07], [12.711, 77.6956, 31.02], [12.9102, 77.6877, 37.68], [12.9615, 77.5757, 49.42], [12.95, 77.583, 43.64], [12.9539, 77.5978, 47.38], [12.9627, 77.603, 46.46]],
+                {
+  "minOpacity": 0.5,
+  "maxZoom": 14,
+  "radius": 25,
+  "blur": 18,
+  "gradient": {
+  "0.2": "blue",
+  "0.5": "yellow",
+  "0.8": "red",
+},
+}
+            );
+        
+    
+            heat_map_172a2db57c71f1a27b1b1179336f1326.addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var marker_89f04b13a075de8e3d4549cb89aad1e3 = L.marker(
+                [12.9767, 77.5713],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_854c12bf9d8a507f261f89d6daaa487e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e951bb43252d250ae8e33e72a819922d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3652c73e55ebaa8af777b385067273b5 = $(`<div id="html_3652c73e55ebaa8af777b385067273b5" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Kempegowda Bus Station</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S001<br>             <b>Avg Demand:</b> 53 passengers/hr<br>             <b>Peak Demand:</b> 114 passengers/hr<br>             <b>Routes Served:</b> 4<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_e951bb43252d250ae8e33e72a819922d.setContent(html_3652c73e55ebaa8af777b385067273b5);
+            
+        
+
+        marker_89f04b13a075de8e3d4549cb89aad1e3.bindPopup(popup_e951bb43252d250ae8e33e72a819922d)
+        ;
+
+        
+    
+    
+            marker_89f04b13a075de8e3d4549cb89aad1e3.bindTooltip(
+                `<div>
+                     Kempegowda Bus Station | 53 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_89f04b13a075de8e3d4549cb89aad1e3.setIcon(icon_854c12bf9d8a507f261f89d6daaa487e);
+            
+    
+            var marker_5eb7c8e00e18734bdb31727e6dadcfa1 = L.marker(
+                [12.983, 77.5994],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_7d0c5adc6b1d5349974c3fe33a784157 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_31c51eb02f4c0b892ee8e252e266658e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_beabc3f51ec271dafb3e54ae86377971 = $(`<div id="html_beabc3f51ec271dafb3e54ae86377971" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Shivajinagar</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S002<br>             <b>Avg Demand:</b> 44 passengers/hr<br>             <b>Peak Demand:</b> 95 passengers/hr<br>             <b>Routes Served:</b> 3<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_31c51eb02f4c0b892ee8e252e266658e.setContent(html_beabc3f51ec271dafb3e54ae86377971);
+            
+        
+
+        marker_5eb7c8e00e18734bdb31727e6dadcfa1.bindPopup(popup_31c51eb02f4c0b892ee8e252e266658e)
+        ;
+
+        
+    
+    
+            marker_5eb7c8e00e18734bdb31727e6dadcfa1.bindTooltip(
+                `<div>
+                     Shivajinagar | 44 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5eb7c8e00e18734bdb31727e6dadcfa1.setIcon(icon_7d0c5adc6b1d5349974c3fe33a784157);
+            
+    
+            var marker_d8f2f47c8dd6ba499a145216ed5b6f43 = L.marker(
+                [12.9698, 77.7499],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_ca9d03837e13603b70dffc8c5eed459c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_40dd6968d6a4ba71b3d00d632671ae7d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3e3c0c7f77681f24b39f9f34f4d44a7b = $(`<div id="html_3e3c0c7f77681f24b39f9f34f4d44a7b" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Whitefield</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S003<br>             <b>Avg Demand:</b> 50 passengers/hr<br>             <b>Peak Demand:</b> 107 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_40dd6968d6a4ba71b3d00d632671ae7d.setContent(html_3e3c0c7f77681f24b39f9f34f4d44a7b);
+            
+        
+
+        marker_d8f2f47c8dd6ba499a145216ed5b6f43.bindPopup(popup_40dd6968d6a4ba71b3d00d632671ae7d)
+        ;
+
+        
+    
+    
+            marker_d8f2f47c8dd6ba499a145216ed5b6f43.bindTooltip(
+                `<div>
+                     Whitefield | 50 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d8f2f47c8dd6ba499a145216ed5b6f43.setIcon(icon_ca9d03837e13603b70dffc8c5eed459c);
+            
+    
+            var marker_b8ef64fa8f80db91abcaf4237faefa5e = L.marker(
+                [12.8399, 77.677],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_b950014385239469af82dbcf9fa98231 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_04487f1c9e79fde2f698948e0d127fce = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_740835ed7e284b7b1b34eba3e74e5273 = $(`<div id="html_740835ed7e284b7b1b34eba3e74e5273" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Electronic City</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S004<br>             <b>Avg Demand:</b> 46 passengers/hr<br>             <b>Peak Demand:</b> 98 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_04487f1c9e79fde2f698948e0d127fce.setContent(html_740835ed7e284b7b1b34eba3e74e5273);
+            
+        
+
+        marker_b8ef64fa8f80db91abcaf4237faefa5e.bindPopup(popup_04487f1c9e79fde2f698948e0d127fce)
+        ;
+
+        
+    
+    
+            marker_b8ef64fa8f80db91abcaf4237faefa5e.bindTooltip(
+                `<div>
+                     Electronic City | 46 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b8ef64fa8f80db91abcaf4237faefa5e.setIcon(icon_b950014385239469af82dbcf9fa98231);
+            
+    
+            var marker_a9cfadcdf6e2cc9fa79a72ebeed3e8c4 = L.marker(
+                [12.9591, 77.7012],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_70220f4c00bba259a42b4b209d587a6f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e9cb68996482a2242b72188859e7e1d8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_413612e879e8a51fa6bd22aaec60f683 = $(`<div id="html_413612e879e8a51fa6bd22aaec60f683" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Marathahalli Bridge</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S005<br>             <b>Avg Demand:</b> 43 passengers/hr<br>             <b>Peak Demand:</b> 91 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_e9cb68996482a2242b72188859e7e1d8.setContent(html_413612e879e8a51fa6bd22aaec60f683);
+            
+        
+
+        marker_a9cfadcdf6e2cc9fa79a72ebeed3e8c4.bindPopup(popup_e9cb68996482a2242b72188859e7e1d8)
+        ;
+
+        
+    
+    
+            marker_a9cfadcdf6e2cc9fa79a72ebeed3e8c4.bindTooltip(
+                `<div>
+                     Marathahalli Bridge | 43 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a9cfadcdf6e2cc9fa79a72ebeed3e8c4.setIcon(icon_70220f4c00bba259a42b4b209d587a6f);
+            
+    
+            var marker_29cb21b9850ff3e79d896daf90c541f5 = L.marker(
+                [12.868, 77.597],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_2230915fe7a4b0feacbebe65802633c8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ab7420c16772e181ef600af86704698c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2146697f2784b2130dd7ab6131ce81fe = $(`<div id="html_2146697f2784b2130dd7ab6131ce81fe" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Bannerghatta Road</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S006<br>             <b>Avg Demand:</b> 43 passengers/hr<br>             <b>Peak Demand:</b> 92 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_ab7420c16772e181ef600af86704698c.setContent(html_2146697f2784b2130dd7ab6131ce81fe);
+            
+        
+
+        marker_29cb21b9850ff3e79d896daf90c541f5.bindPopup(popup_ab7420c16772e181ef600af86704698c)
+        ;
+
+        
+    
+    
+            marker_29cb21b9850ff3e79d896daf90c541f5.bindTooltip(
+                `<div>
+                     Bannerghatta Road | 43 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_29cb21b9850ff3e79d896daf90c541f5.setIcon(icon_2230915fe7a4b0feacbebe65802633c8);
+            
+    
+            var marker_db94597953861024ea4c8896425d1222 = L.marker(
+                [12.9352, 77.6245],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_b786abd6607c40b53c06ee4a49ecb5b7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6be330af27083053f7c17112c882cf25 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_502497c111bd6301609e2b1b85786411 = $(`<div id="html_502497c111bd6301609e2b1b85786411" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Koramangala 1st Block</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S007<br>             <b>Avg Demand:</b> 39 passengers/hr<br>             <b>Peak Demand:</b> 84 passengers/hr<br>             <b>Routes Served:</b> 3<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_6be330af27083053f7c17112c882cf25.setContent(html_502497c111bd6301609e2b1b85786411);
+            
+        
+
+        marker_db94597953861024ea4c8896425d1222.bindPopup(popup_6be330af27083053f7c17112c882cf25)
+        ;
+
+        
+    
+    
+            marker_db94597953861024ea4c8896425d1222.bindTooltip(
+                `<div>
+                     Koramangala 1st Block | 39 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_db94597953861024ea4c8896425d1222.setIcon(icon_b786abd6607c40b53c06ee4a49ecb5b7);
+            
+    
+            var marker_5ed7e13d53c4e0fb54ffd12396e04d45 = L.marker(
+                [12.9116, 77.6474],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_1635227b1546e91bb712f11b30af16ae = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_765fdd017caf44642345c2113ab28809 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5e77c346debd5804b4a18e67e5c47771 = $(`<div id="html_5e77c346debd5804b4a18e67e5c47771" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>HSR Layout</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S008<br>             <b>Avg Demand:</b> 40 passengers/hr<br>             <b>Peak Demand:</b> 84 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_765fdd017caf44642345c2113ab28809.setContent(html_5e77c346debd5804b4a18e67e5c47771);
+            
+        
+
+        marker_5ed7e13d53c4e0fb54ffd12396e04d45.bindPopup(popup_765fdd017caf44642345c2113ab28809)
+        ;
+
+        
+    
+    
+            marker_5ed7e13d53c4e0fb54ffd12396e04d45.bindTooltip(
+                `<div>
+                     HSR Layout | 40 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5ed7e13d53c4e0fb54ffd12396e04d45.setIcon(icon_1635227b1546e91bb712f11b30af16ae);
+            
+    
+            var marker_dd9ea826e1abead8b4f1599e484e723c = L.marker(
+                [12.9308, 77.583],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_6cd19427a8222fe455227a257e3a1703 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a6f6e96e7ad3081a24a78d9c9252d8a6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_82217fca37e58de9f89c0fc8e12d6bd2 = $(`<div id="html_82217fca37e58de9f89c0fc8e12d6bd2" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Jayanagar 4th Block</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S009<br>             <b>Avg Demand:</b> 44 passengers/hr<br>             <b>Peak Demand:</b> 93 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_a6f6e96e7ad3081a24a78d9c9252d8a6.setContent(html_82217fca37e58de9f89c0fc8e12d6bd2);
+            
+        
+
+        marker_dd9ea826e1abead8b4f1599e484e723c.bindPopup(popup_a6f6e96e7ad3081a24a78d9c9252d8a6)
+        ;
+
+        
+    
+    
+            marker_dd9ea826e1abead8b4f1599e484e723c.bindTooltip(
+                `<div>
+                     Jayanagar 4th Block | 44 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_dd9ea826e1abead8b4f1599e484e723c.setIcon(icon_6cd19427a8222fe455227a257e3a1703);
+            
+    
+            var marker_1b79a11e40e050c6cbde024194c16e8e = L.marker(
+                [12.9165, 77.6101],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_2e0536fc9772bbae2e71d3af178cb352 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9a0dbd0ae376b476000b1d71cb43d59d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_74c9c745e818bedbd2cf7fe70e1c6534 = $(`<div id="html_74c9c745e818bedbd2cf7fe70e1c6534" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>BTM Layout</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S010<br>             <b>Avg Demand:</b> 40 passengers/hr<br>             <b>Peak Demand:</b> 84 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_9a0dbd0ae376b476000b1d71cb43d59d.setContent(html_74c9c745e818bedbd2cf7fe70e1c6534);
+            
+        
+
+        marker_1b79a11e40e050c6cbde024194c16e8e.bindPopup(popup_9a0dbd0ae376b476000b1d71cb43d59d)
+        ;
+
+        
+    
+    
+            marker_1b79a11e40e050c6cbde024194c16e8e.bindTooltip(
+                `<div>
+                     BTM Layout | 40 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1b79a11e40e050c6cbde024194c16e8e.setIcon(icon_2e0536fc9772bbae2e71d3af178cb352);
+            
+    
+            var marker_2582fa464ea4494fcea829a156b3f9d3 = L.marker(
+                [12.9175, 77.6229],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_011aec6d67d5ddade9001107e3cbbbc4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_62390af6acc5a8eb623337da6826d282 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6ac5b6f7d43103fcb95c322e20c57484 = $(`<div id="html_6ac5b6f7d43103fcb95c322e20c57484" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Silk Board Junction</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S011<br>             <b>Avg Demand:</b> 38 passengers/hr<br>             <b>Peak Demand:</b> 81 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_62390af6acc5a8eb623337da6826d282.setContent(html_6ac5b6f7d43103fcb95c322e20c57484);
+            
+        
+
+        marker_2582fa464ea4494fcea829a156b3f9d3.bindPopup(popup_62390af6acc5a8eb623337da6826d282)
+        ;
+
+        
+    
+    
+            marker_2582fa464ea4494fcea829a156b3f9d3.bindTooltip(
+                `<div>
+                     Silk Board Junction | 38 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_2582fa464ea4494fcea829a156b3f9d3.setIcon(icon_011aec6d67d5ddade9001107e3cbbbc4);
+            
+    
+            var marker_e228e6a71453325502cb5cb79090622f = L.marker(
+                [12.9784, 77.6408],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_5832ff623a4af8ec073701624b2eb3f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bde4a11e78b5bd284d34abb189399764 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bfd59a5d84dc2d978df312f0afee3e3a = $(`<div id="html_bfd59a5d84dc2d978df312f0afee3e3a" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Indiranagar 100ft Road</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S012<br>             <b>Avg Demand:</b> 41 passengers/hr<br>             <b>Peak Demand:</b> 86 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_bde4a11e78b5bd284d34abb189399764.setContent(html_bfd59a5d84dc2d978df312f0afee3e3a);
+            
+        
+
+        marker_e228e6a71453325502cb5cb79090622f.bindPopup(popup_bde4a11e78b5bd284d34abb189399764)
+        ;
+
+        
+    
+    
+            marker_e228e6a71453325502cb5cb79090622f.bindTooltip(
+                `<div>
+                     Indiranagar 100ft Road | 41 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e228e6a71453325502cb5cb79090622f.setIcon(icon_5832ff623a4af8ec073701624b2eb3f3);
+            
+    
+            var marker_41ff1da14e3d078da9d8482256d2f618 = L.marker(
+                [12.9942, 77.5516],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_f6cc2419cbc2bbbc05724011f4a5138b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_33f43a9c6a392cc6b2892cb988faa5d5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f45da75477c8154f9b8ca796d8c1e292 = $(`<div id="html_f45da75477c8154f9b8ca796d8c1e292" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Rajajinagar</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S013<br>             <b>Avg Demand:</b> 38 passengers/hr<br>             <b>Peak Demand:</b> 80 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_33f43a9c6a392cc6b2892cb988faa5d5.setContent(html_f45da75477c8154f9b8ca796d8c1e292);
+            
+        
+
+        marker_41ff1da14e3d078da9d8482256d2f618.bindPopup(popup_33f43a9c6a392cc6b2892cb988faa5d5)
+        ;
+
+        
+    
+    
+            marker_41ff1da14e3d078da9d8482256d2f618.bindTooltip(
+                `<div>
+                     Rajajinagar | 38 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_41ff1da14e3d078da9d8482256d2f618.setIcon(icon_f6cc2419cbc2bbbc05724011f4a5138b);
+            
+    
+            var marker_fc0e9cf60963d5fa5d12cbcd4d3bebdc = L.marker(
+                [13.0234, 77.539],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_3aed60ec12f5d99ceae7379a72b84623 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f1b06695192b19b1a627675595ba3cb3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_327598584caf840fd8e300228584a086 = $(`<div id="html_327598584caf840fd8e300228584a086" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Yeshwantpur Circle</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S014<br>             <b>Avg Demand:</b> 36 passengers/hr<br>             <b>Peak Demand:</b> 77 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_f1b06695192b19b1a627675595ba3cb3.setContent(html_327598584caf840fd8e300228584a086);
+            
+        
+
+        marker_fc0e9cf60963d5fa5d12cbcd4d3bebdc.bindPopup(popup_f1b06695192b19b1a627675595ba3cb3)
+        ;
+
+        
+    
+    
+            marker_fc0e9cf60963d5fa5d12cbcd4d3bebdc.bindTooltip(
+                `<div>
+                     Yeshwantpur Circle | 36 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fc0e9cf60963d5fa5d12cbcd4d3bebdc.setIcon(icon_3aed60ec12f5d99ceae7379a72b84623);
+            
+    
+            var marker_5c91f161fb1be6af594945c9d7ad2e18 = L.marker(
+                [13.0358, 77.597],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_d274dc9dd0f2924fcca3608465413a15 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_82c5cc02abfb3bb5acf2d4d805fe2484 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ef825baffcc7b7d29c80955529151759 = $(`<div id="html_ef825baffcc7b7d29c80955529151759" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Hebbal Flyover</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S015<br>             <b>Avg Demand:</b> 38 passengers/hr<br>             <b>Peak Demand:</b> 80 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_82c5cc02abfb3bb5acf2d4d805fe2484.setContent(html_ef825baffcc7b7d29c80955529151759);
+            
+        
+
+        marker_5c91f161fb1be6af594945c9d7ad2e18.bindPopup(popup_82c5cc02abfb3bb5acf2d4d805fe2484)
+        ;
+
+        
+    
+    
+            marker_5c91f161fb1be6af594945c9d7ad2e18.bindTooltip(
+                `<div>
+                     Hebbal Flyover | 38 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5c91f161fb1be6af594945c9d7ad2e18.setIcon(icon_d274dc9dd0f2924fcca3608465413a15);
+            
+    
+            var marker_ec1433d19c92936994a4a9a95e468539 = L.marker(
+                [13.1004, 77.5963],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_e105ecfa89f5a5ae019ffccddc21e241 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8d45450d681c4d2d7d8080880d43c703 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3c98675a43086b64cfd4913f9469bd44 = $(`<div id="html_3c98675a43086b64cfd4913f9469bd44" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Yelahanka</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S016<br>             <b>Avg Demand:</b> 30 passengers/hr<br>             <b>Peak Demand:</b> 64 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_8d45450d681c4d2d7d8080880d43c703.setContent(html_3c98675a43086b64cfd4913f9469bd44);
+            
+        
+
+        marker_ec1433d19c92936994a4a9a95e468539.bindPopup(popup_8d45450d681c4d2d7d8080880d43c703)
+        ;
+
+        
+    
+    
+            marker_ec1433d19c92936994a4a9a95e468539.bindTooltip(
+                `<div>
+                     Yelahanka | 30 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ec1433d19c92936994a4a9a95e468539.setIcon(icon_e105ecfa89f5a5ae019ffccddc21e241);
+            
+    
+            var marker_1fcdef03844be507d78c6b0efd785963 = L.marker(
+                [12.906, 77.4822],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_2e0afa83a5c6b771b569627ef9f94f10 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a8f3d2c5163a8056fd73ec6810790e07 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0caa89e10c192450551d283dfc05f19d = $(`<div id="html_0caa89e10c192450551d283dfc05f19d" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Kengeri</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S017<br>             <b>Avg Demand:</b> 48 passengers/hr<br>             <b>Peak Demand:</b> 102 passengers/hr<br>             <b>Routes Served:</b> 1<br>             <b>Cluster:</b> 1<br>             <br><b style="color:red">⚠️ GHOST HOTSPOT</b>         </div>         </div>`)[0];
+                popup_a8f3d2c5163a8056fd73ec6810790e07.setContent(html_0caa89e10c192450551d283dfc05f19d);
+            
+        
+
+        marker_1fcdef03844be507d78c6b0efd785963.bindPopup(popup_a8f3d2c5163a8056fd73ec6810790e07)
+        ;
+
+        
+    
+    
+            marker_1fcdef03844be507d78c6b0efd785963.bindTooltip(
+                `<div>
+                     Kengeri | 48 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1fcdef03844be507d78c6b0efd785963.setIcon(icon_2e0afa83a5c6b771b569627ef9f94f10);
+            
+    
+            var marker_9b0785b314c06722d664195c0e2de4c3 = L.marker(
+                [12.9757, 77.6063],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_bf8f277856b39e02037a128b88d948a6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2eba157547b2f68ffc000f5b4ce198f7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1ccc29c4333d8c088e835fd45673f928 = $(`<div id="html_1ccc29c4333d8c088e835fd45673f928" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>MG Road</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S018<br>             <b>Avg Demand:</b> 43 passengers/hr<br>             <b>Peak Demand:</b> 92 passengers/hr<br>             <b>Routes Served:</b> 3<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_2eba157547b2f68ffc000f5b4ce198f7.setContent(html_1ccc29c4333d8c088e835fd45673f928);
+            
+        
+
+        marker_9b0785b314c06722d664195c0e2de4c3.bindPopup(popup_2eba157547b2f68ffc000f5b4ce198f7)
+        ;
+
+        
+    
+    
+            marker_9b0785b314c06722d664195c0e2de4c3.bindTooltip(
+                `<div>
+                     MG Road | 43 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9b0785b314c06722d664195c0e2de4c3.setIcon(icon_bf8f277856b39e02037a128b88d948a6);
+            
+    
+            var marker_a7db55b6289ac31b8a396541a9893e32 = L.marker(
+                [12.9259, 77.566],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_4aca9b2147cae55737d723f2c28260e1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_58b390f8ab60d2730f90ca63625af819 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_884e519b56effb567d61a6b824438145 = $(`<div id="html_884e519b56effb567d61a6b824438145" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Banashankari</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S019<br>             <b>Avg Demand:</b> 41 passengers/hr<br>             <b>Peak Demand:</b> 86 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_58b390f8ab60d2730f90ca63625af819.setContent(html_884e519b56effb567d61a6b824438145);
+            
+        
+
+        marker_a7db55b6289ac31b8a396541a9893e32.bindPopup(popup_58b390f8ab60d2730f90ca63625af819)
+        ;
+
+        
+    
+    
+            marker_a7db55b6289ac31b8a396541a9893e32.bindTooltip(
+                `<div>
+                     Banashankari | 41 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a7db55b6289ac31b8a396541a9893e32.setIcon(icon_4aca9b2147cae55737d723f2c28260e1);
+            
+    
+            var marker_5a018c4c680c5b06f98f90d240b30422 = L.marker(
+                [13.0588, 77.5539],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_88617630cd509447749a21f1a1bfca92 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f1a2036856c854e8f70547f72a59d046 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0cbd2a41b024271fc498f57b86a04f80 = $(`<div id="html_0cbd2a41b024271fc498f57b86a04f80" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Vidyaranyapura</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S020<br>             <b>Avg Demand:</b> 31 passengers/hr<br>             <b>Peak Demand:</b> 66 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_f1a2036856c854e8f70547f72a59d046.setContent(html_0cbd2a41b024271fc498f57b86a04f80);
+            
+        
+
+        marker_5a018c4c680c5b06f98f90d240b30422.bindPopup(popup_f1a2036856c854e8f70547f72a59d046)
+        ;
+
+        
+    
+    
+            marker_5a018c4c680c5b06f98f90d240b30422.bindTooltip(
+                `<div>
+                     Vidyaranyapura | 31 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5a018c4c680c5b06f98f90d240b30422.setIcon(icon_88617630cd509447749a21f1a1bfca92);
+            
+    
+            var marker_f2f6342a3d5aa39448359c1340abf82c = L.marker(
+                [12.9607, 77.6395],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_78cacc78ccd745fc4ebf903bee639b6a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c874201274296571d2e6570193401334 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bcac23e9eddbb4d07e69c064497da0f7 = $(`<div id="html_bcac23e9eddbb4d07e69c064497da0f7" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Domlur</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S021<br>             <b>Avg Demand:</b> 37 passengers/hr<br>             <b>Peak Demand:</b> 78 passengers/hr<br>             <b>Routes Served:</b> 1<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_c874201274296571d2e6570193401334.setContent(html_bcac23e9eddbb4d07e69c064497da0f7);
+            
+        
+
+        marker_f2f6342a3d5aa39448359c1340abf82c.bindPopup(popup_c874201274296571d2e6570193401334)
+        ;
+
+        
+    
+    
+            marker_f2f6342a3d5aa39448359c1340abf82c.bindTooltip(
+                `<div>
+                     Domlur | 37 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f2f6342a3d5aa39448359c1340abf82c.setIcon(icon_78cacc78ccd745fc4ebf903bee639b6a);
+            
+    
+            var marker_cb1cd3569b98c9c0460764ab5898d21a = L.marker(
+                [13.045, 77.623],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_50fa67f62a86139609c950bf343219c3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f3f79244654563190d6fd7a30305957e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bf7f3950165d9a9acb9dc31fbb9769e9 = $(`<div id="html_bf7f3950165d9a9acb9dc31fbb9769e9" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Nagawara Junction</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S022<br>             <b>Avg Demand:</b> 35 passengers/hr<br>             <b>Peak Demand:</b> 74 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_f3f79244654563190d6fd7a30305957e.setContent(html_bf7f3950165d9a9acb9dc31fbb9769e9);
+            
+        
+
+        marker_cb1cd3569b98c9c0460764ab5898d21a.bindPopup(popup_f3f79244654563190d6fd7a30305957e)
+        ;
+
+        
+    
+    
+            marker_cb1cd3569b98c9c0460764ab5898d21a.bindTooltip(
+                `<div>
+                     Nagawara Junction | 35 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cb1cd3569b98c9c0460764ab5898d21a.setIcon(icon_50fa67f62a86139609c950bf343219c3);
+            
+    
+            var marker_92fd529eb1c978cc97a5ace254f3a386 = L.marker(
+                [13.032, 77.523],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_7b3d55dd0015f055b63f2f213d246f4f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_14c720fcee6be2673554c2695eae2a9b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a9e29dd381be8428abbb34a360f637c3 = $(`<div id="html_a9e29dd381be8428abbb34a360f637c3" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Tumkur Road</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S023<br>             <b>Avg Demand:</b> 27 passengers/hr<br>             <b>Peak Demand:</b> 57 passengers/hr<br>             <b>Routes Served:</b> 1<br>             <b>Cluster:</b> 0<br>                      </div>         </div>`)[0];
+                popup_14c720fcee6be2673554c2695eae2a9b.setContent(html_a9e29dd381be8428abbb34a360f637c3);
+            
+        
+
+        marker_92fd529eb1c978cc97a5ace254f3a386.bindPopup(popup_14c720fcee6be2673554c2695eae2a9b)
+        ;
+
+        
+    
+    
+            marker_92fd529eb1c978cc97a5ace254f3a386.bindTooltip(
+                `<div>
+                     Tumkur Road | 27 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_92fd529eb1c978cc97a5ace254f3a386.setIcon(icon_7b3d55dd0015f055b63f2f213d246f4f);
+            
+    
+            var marker_553b12921baf9bb02e173bb44aa181bc = L.marker(
+                [13.1979, 77.7063],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_a47b9d774d365d59741dc4ba0e9dfd88 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkred",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bebb92f993dd5a6d8b4d0523f447fb89 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e8c4257fec17f8e4872e27eea61f9e04 = $(`<div id="html_e8c4257fec17f8e4872e27eea61f9e04" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Airport Road (BIAL)</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S024<br>             <b>Avg Demand:</b> 27 passengers/hr<br>             <b>Peak Demand:</b> 58 passengers/hr<br>             <b>Routes Served:</b> 1<br>             <b>Cluster:</b> 3<br>                      </div>         </div>`)[0];
+                popup_bebb92f993dd5a6d8b4d0523f447fb89.setContent(html_e8c4257fec17f8e4872e27eea61f9e04);
+            
+        
+
+        marker_553b12921baf9bb02e173bb44aa181bc.bindPopup(popup_bebb92f993dd5a6d8b4d0523f447fb89)
+        ;
+
+        
+    
+    
+            marker_553b12921baf9bb02e173bb44aa181bc.bindTooltip(
+                `<div>
+                     Airport Road (BIAL) | 27 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_553b12921baf9bb02e173bb44aa181bc.setIcon(icon_a47b9d774d365d59741dc4ba0e9dfd88);
+            
+    
+            var marker_60ee186b000c331e759c6e9532baa375 = L.marker(
+                [12.711, 77.6956],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_524ab2ad926adf0ea8c56072022cacd7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "purple",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a57b9c049c541941ecba0cdff950b61e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e0de58fdcefcb7872e857c8e1f17e432 = $(`<div id="html_e0de58fdcefcb7872e857c8e1f17e432" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Anekal</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S025<br>             <b>Avg Demand:</b> 31 passengers/hr<br>             <b>Peak Demand:</b> 66 passengers/hr<br>             <b>Routes Served:</b> 1<br>             <b>Cluster:</b> 4<br>                      </div>         </div>`)[0];
+                popup_a57b9c049c541941ecba0cdff950b61e.setContent(html_e0de58fdcefcb7872e857c8e1f17e432);
+            
+        
+
+        marker_60ee186b000c331e759c6e9532baa375.bindPopup(popup_a57b9c049c541941ecba0cdff950b61e)
+        ;
+
+        
+    
+    
+            marker_60ee186b000c331e759c6e9532baa375.bindTooltip(
+                `<div>
+                     Anekal | 31 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_60ee186b000c331e759c6e9532baa375.setIcon(icon_524ab2ad926adf0ea8c56072022cacd7);
+            
+    
+            var marker_627e049aee90c8ae0e0730feccd6f4f6 = L.marker(
+                [12.9102, 77.6877],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_4421a5481e4b1df2ea784b07b163411b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5d0a79104f1b0473bc7cfbeb46df7c27 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f0862ac70019e9fc83298c77040e14bb = $(`<div id="html_f0862ac70019e9fc83298c77040e14bb" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Sarjapur Road</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S026<br>             <b>Avg Demand:</b> 38 passengers/hr<br>             <b>Peak Demand:</b> 79 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 2<br>                      </div>         </div>`)[0];
+                popup_5d0a79104f1b0473bc7cfbeb46df7c27.setContent(html_f0862ac70019e9fc83298c77040e14bb);
+            
+        
+
+        marker_627e049aee90c8ae0e0730feccd6f4f6.bindPopup(popup_5d0a79104f1b0473bc7cfbeb46df7c27)
+        ;
+
+        
+    
+    
+            marker_627e049aee90c8ae0e0730feccd6f4f6.bindTooltip(
+                `<div>
+                     Sarjapur Road | 38 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_627e049aee90c8ae0e0730feccd6f4f6.setIcon(icon_4421a5481e4b1df2ea784b07b163411b);
+            
+    
+            var marker_96cfd5ec1bf58978205b7c75f02dd9be = L.marker(
+                [12.9615, 77.5757],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_912a439cdfdaad4c14ffac9bedebfe58 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f7ffce66e346c8dc90fdbdeb3a1ca31f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_14bca8f7eda5b48789f7113d30fd406c = $(`<div id="html_14bca8f7eda5b48789f7113d30fd406c" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>KR Market</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S027<br>             <b>Avg Demand:</b> 49 passengers/hr<br>             <b>Peak Demand:</b> 104 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_f7ffce66e346c8dc90fdbdeb3a1ca31f.setContent(html_14bca8f7eda5b48789f7113d30fd406c);
+            
+        
+
+        marker_96cfd5ec1bf58978205b7c75f02dd9be.bindPopup(popup_f7ffce66e346c8dc90fdbdeb3a1ca31f)
+        ;
+
+        
+    
+    
+            marker_96cfd5ec1bf58978205b7c75f02dd9be.bindTooltip(
+                `<div>
+                     KR Market | 49 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_96cfd5ec1bf58978205b7c75f02dd9be.setIcon(icon_912a439cdfdaad4c14ffac9bedebfe58);
+            
+    
+            var marker_2f4addce6f7595cf4cef1d8a92563c56 = L.marker(
+                [12.95, 77.583],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_147f86d12bd3dee46876d2a2fdce7d4f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_098d568ae6c9638b18ee6eecabcaa443 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_032d5578ea71e3b2e08136cc717445b3 = $(`<div id="html_032d5578ea71e3b2e08136cc717445b3" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Lalbagh Gate</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S028<br>             <b>Avg Demand:</b> 44 passengers/hr<br>             <b>Peak Demand:</b> 92 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_098d568ae6c9638b18ee6eecabcaa443.setContent(html_032d5578ea71e3b2e08136cc717445b3);
+            
+        
+
+        marker_2f4addce6f7595cf4cef1d8a92563c56.bindPopup(popup_098d568ae6c9638b18ee6eecabcaa443)
+        ;
+
+        
+    
+    
+            marker_2f4addce6f7595cf4cef1d8a92563c56.bindTooltip(
+                `<div>
+                     Lalbagh Gate | 44 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_2f4addce6f7595cf4cef1d8a92563c56.setIcon(icon_147f86d12bd3dee46876d2a2fdce7d4f);
+            
+    
+            var marker_442fdfb2bdf4c84022c4c35ac90a6afc = L.marker(
+                [12.9539, 77.5978],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_f733cf77b05454600a13142484872b13 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_98cdaa63227e6f5babeddcf990eaa7d1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_243cd4ff77d2519958bf8fb02b0cedcc = $(`<div id="html_243cd4ff77d2519958bf8fb02b0cedcc" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Shanti Nagar</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S029<br>             <b>Avg Demand:</b> 47 passengers/hr<br>             <b>Peak Demand:</b> 101 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_98cdaa63227e6f5babeddcf990eaa7d1.setContent(html_243cd4ff77d2519958bf8fb02b0cedcc);
+            
+        
+
+        marker_442fdfb2bdf4c84022c4c35ac90a6afc.bindPopup(popup_98cdaa63227e6f5babeddcf990eaa7d1)
+        ;
+
+        
+    
+    
+            marker_442fdfb2bdf4c84022c4c35ac90a6afc.bindTooltip(
+                `<div>
+                     Shanti Nagar | 47 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_442fdfb2bdf4c84022c4c35ac90a6afc.setIcon(icon_f733cf77b05454600a13142484872b13);
+            
+    
+            var marker_4e7a976b9d91fe413c85d59925470f3b = L.marker(
+                [12.9627, 77.603],
+                {
+}
+            ).addTo(map_be1aa849cf14ac4cd76248f922a591d9);
+        
+    
+            var icon_97850035c5cb1ce58d7ea69c7c8906c6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8077880550910278d9025c311dd0b668 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9e73a3c9c25e9f7b9c685c6349b54d0c = $(`<div id="html_9e73a3c9c25e9f7b9c685c6349b54d0c" style="width: 100.0%; height: 100.0%;">         <div style='font-family:sans-serif; font-size:13px; min-width:200px'>             <b style='color:#333'>Richmond Circle</b><br>             <hr style='margin:4px 0'>             <b>Stop ID:</b> S030<br>             <b>Avg Demand:</b> 46 passengers/hr<br>             <b>Peak Demand:</b> 99 passengers/hr<br>             <b>Routes Served:</b> 2<br>             <b>Cluster:</b> 1<br>                      </div>         </div>`)[0];
+                popup_8077880550910278d9025c311dd0b668.setContent(html_9e73a3c9c25e9f7b9c685c6349b54d0c);
+            
+        
+
+        marker_4e7a976b9d91fe413c85d59925470f3b.bindPopup(popup_8077880550910278d9025c311dd0b668)
+        ;
+
+        
+    
+    
+            marker_4e7a976b9d91fe413c85d59925470f3b.bindTooltip(
+                `<div>
+                     Richmond Circle | 46 pass/hr
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4e7a976b9d91fe413c85d59925470f3b.setIcon(icon_97850035c5cb1ce58d7ea69c7c8906c6);
+            
+</script>
+</html>
