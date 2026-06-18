@@ -101,52 +101,46 @@ def load_predictor():
 # ─────────────────────────────────────────────
 # SIDEBAR NAVIGATION
 # ─────────────────────────────────────────────
-from streamlit_option_menu import option_menu
+
 def render_sidebar():
     with st.sidebar:
-        st.markdown("<h2 style='text-align: center; margin-bottom: 0;'>🚌 Eco-Transit Pulse</h2>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; color: gray; margin-top: 0;'>Urban Mobility Optimizer</p>", unsafe_allow_html=True)
-        st.write("---")
-        
-        selected_page = option_menu(
-            menu_title=None,
-            options=["Home", "Data Explorer", "Exploratory Analysis", "Demand Prediction", "Ghost Hotspots", "Recommendations"],
-            icons=["house", "folder", "bar-chart", "graph-up", "map", "lightbulb"],
-            default_index=0,
+        st.markdown(
+            "<h2 style='text-align: center; margin-bottom: 0;'>🚌 Eco-Transit Pulse</h2>",
+            unsafe_allow_html=True
         )
-        
+        st.markdown(
+            "<p style='text-align: center; color: gray; margin-top: 0;'>Urban Mobility Optimizer</p>",
+            unsafe_allow_html=True
+        )
+
+        st.write("---")
+
+        selected_page = st.radio(
+            "Navigation",
+            [
+                "🏠 Home",
+                "📂 Data Explorer",
+                "📊 Exploratory Analysis",
+                "🔮 Demand Prediction",
+                "🗺️ Ghost Hotspots",
+                "💡 Recommendations"
+            ]
+        )
+
         st.write("---")
         st.write("**Tech Stack:** Python, Streamlit, TensorFlow, Scikit-learn")
         st.write("**Models:** LSTM + Random Forest")
-        
+
         page_mapping = {
-            "Home": "Home",
-            "Data Explorer": "Data Explorer",
-            "Exploratory Analysis": "EDA",
-            "Demand Prediction": "Prediction",
-            "Ghost Hotspots": "Hotspots",
-            "Recommendations": "Recommendations"
+            "🏠 Home": "Home",
+            "📂 Data Explorer": "Data Explorer",
+            "📊 Exploratory Analysis": "EDA",
+            "🔮 Demand Prediction": "Prediction",
+            "🗺️ Ghost Hotspots": "Hotspots",
+            "💡 Recommendations": "Recommendations"
         }
+
         return page_mapping[selected_page]
-
-def kpi_card(icon: str, number: str, label: str) -> str:
-    return f"""
-    <div class='kpi-card'>
-        <div class='kpi-icon'>{icon}</div>
-        <div class='kpi-number'>{number}</div>
-        <div class='kpi-label'>{label}</div>
-    </div>
-    """
-
-
-def demand_badge(category: str) -> str:
-    colors = {
-        "Low": "#27ae60", "Medium": "#f39c12",
-        "High": "#e67e22", "Very High": "#e74c3c"
-    }
-    color = colors.get(category, "#3f5efb")
-    return f"<span style='background:{color};color:white;padding:2px 10px;border-radius:12px;font-size:0.82rem;font-weight:600;'>{category}</span>"
-
 
 # ═══════════════════════════════════════════════
 # PAGE 1 — HOME
