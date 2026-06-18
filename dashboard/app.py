@@ -97,51 +97,45 @@ def load_predictor():
     except Exception as e:
         return None
 
-
 # ─────────────────────────────────────────────
 # SIDEBAR NAVIGATION
 # ─────────────────────────────────────────────
 
 def render_sidebar():
     with st.sidebar:
-        st.markdown(
-            "<h2 style='text-align: center; margin-bottom: 0;'>🚌 Eco-Transit Pulse</h2>",
-            unsafe_allow_html=True
-        )
-        st.markdown(
-            "<p style='text-align: center; color: gray; margin-top: 0;'>Urban Mobility Optimizer</p>",
-            unsafe_allow_html=True
-        )
+        st.markdown("## 🚌 Eco-Transit Pulse")
+        st.caption("Urban Mobility Optimizer")
 
         st.write("---")
 
-        selected_page = st.radio(
-            "Navigation",
-            [
-                "🏠 Home",
-                "📂 Data Explorer",
-                "📊 Exploratory Analysis",
-                "🔮 Demand Prediction",
-                "🗺️ Ghost Hotspots",
-                "💡 Recommendations"
-            ]
-        )
+        if "page" not in st.session_state:
+            st.session_state.page = "Home"
+
+        if st.button("🏠 Home", use_container_width=True):
+            st.session_state.page = "Home"
+
+        if st.button("📂 Data Explorer", use_container_width=True):
+            st.session_state.page = "Data Explorer"
+
+        if st.button("📊 Exploratory Analysis", use_container_width=True):
+            st.session_state.page = "EDA"
+
+        if st.button("🔮 Demand Prediction", use_container_width=True):
+            st.session_state.page = "Prediction"
+
+        if st.button("🗺️ Ghost Hotspots", use_container_width=True):
+            st.session_state.page = "Hotspots"
+
+        if st.button("💡 Recommendations", use_container_width=True):
+            st.session_state.page = "Recommendations"
 
         st.write("---")
         st.write("**Tech Stack:** Python, Streamlit, TensorFlow, Scikit-learn")
         st.write("**Models:** LSTM + Random Forest")
 
-        page_mapping = {
-            "🏠 Home": "Home",
-            "📂 Data Explorer": "Data Explorer",
-            "📊 Exploratory Analysis": "EDA",
-            "🔮 Demand Prediction": "Prediction",
-            "🗺️ Ghost Hotspots": "Hotspots",
-            "💡 Recommendations": "Recommendations"
-        }
+        return st.session_state.page
 
-        return page_mapping[selected_page]
-
+# ══════════════════
 # ═══════════════════════════════════════════════
 # PAGE 1 — HOME
 # ═══════════════════════════════════════════════
