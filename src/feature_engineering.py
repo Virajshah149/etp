@@ -40,7 +40,7 @@ logger = setup_logger(__name__)
 # PEAK HOUR DEFINITION
 # Based on BMTC reported peak ridership hours (morning + evening)
 # ─────────────────────────────────────────────
-MORNING_PEAK_HOURS = {7, 8, 9}
+MORNING_PEAK_HOURS = {7, 8, 9 } 
 EVENING_PEAK_HOURS = {17, 18, 19}
 PEAK_HOURS = MORNING_PEAK_HOURS | EVENING_PEAK_HOURS
 

@@ -33,7 +33,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import joblib
-
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # Suppress TensorFlow warnings
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout, Input

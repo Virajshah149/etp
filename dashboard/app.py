@@ -16,8 +16,10 @@ Run with:
 
 import sys
 import os
+
 import json
 import warnings
+warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 import plotly.express as px
